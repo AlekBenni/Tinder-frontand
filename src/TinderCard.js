@@ -1,24 +1,20 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './TinderCards.css'
 import TinderCard from 'react-tinder-card'
+import axios from './axios'
 
 function TinderCards() {
 
-    const [people, setPeople] = useState([
-        {
-            name: 'Elon Musk',
-            url: "https://www.cityam.com/wp-content/uploads/2021/01/Elon-Musk-Awarded-With-Axel-Springer-Award-In-Berlin-1229892421-960x668.jpg"
-        },
-        {
-            name: "Aleksey Navalny",
-            url: "http://sun9-72.userapi.com/s/v1/if1/v6Wh8uPLg0sWsleXvdjlNp5ZfbhuWxStMZ6zD0gYcOf_9ryfT9nVKObN5i7NTSfZbu64Sw.jpg?size=400x0&quality=96&crop=0,0,538,538&ava=1"
-        },
-        {
-            name: "Bruna Lopes",
-            url: "https://gay.blog.br/wp-content/uploads/2020/11/bruna_maravilha_Capa.jpg"
+    const [people, setPeople] = useState([ ])
+
+    useEffect(() => {
+        async function fatchData(){
+            const req = await axios.get('/tinder/cards')
+            setPeople(req.data)
         }
-    ])
+        fatchData()
+    },[])
 
     const swiped = (direction, nameToDelite) => {
         console.log("removing" + nameToDelite)
@@ -42,7 +38,7 @@ function TinderCards() {
                 >
                     <div
                     className="card"
-                    style={ {backgroundImage: `url(${person.url})`}}
+                    style={ {backgroundImage: `url(${person.imgUrl})`}}
                     >
                         <h3>{person.name}</h3>
                     </div>
